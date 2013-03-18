@@ -5,10 +5,10 @@ e.g.
 c = new Conway([3,3])
 
 Start the game:
-c.startGame() `or use the shorter alias c.s()`
+c.start() `or use the shorter alias c.s()`
 
 Pausing the game:
-c.pauseGame() `or use the shorter alias c.p()`
+c.pause() `or use the shorter alias c.p()`
 
 If you want more control, you can randomly generate the board:
 c.populateBoard()
@@ -22,9 +22,14 @@ To manually progress the board to the next generation:
 c.nextGeneration()
 
 Easiest way to run this is just to copy and execute the contents of this script in browser console like Chrome or
-Firefox. You can also execute this in NodeJS.
+Firefox.
+
+You can also execute this in NodeJS by loading Conway from the REPL:
+conway = require('./conway')
+c = new conway.game()
+c.start()
 */
-function Conway(dimensions) {
+function conway(dimensions) {
   var board = []
   var dimensions = typeof dimensions !== 'undefined' ? dimensions : [25,25]
   var neighborRanges = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]
@@ -32,7 +37,7 @@ function Conway(dimensions) {
   var playing = false
 
   /* Kicks the game off */
-  this.startGame = function() {
+  this.start= function() {
     if (playing) {
       return
     }
@@ -44,11 +49,11 @@ function Conway(dimensions) {
 
   /* alias for startGame */
   this.s = function() {
-    this.startGame()
+    this.start()
   }
 
   /* Pauses the game */
-  this.pauseGame = function() {
+  this.pause = function() {
     if (playing) {
       playing = clearInterval(playing)
     }
@@ -56,7 +61,7 @@ function Conway(dimensions) {
 
   /* alias for pauseGame */
   this.p = function() {
-    this.pauseGame()
+    this.pause()
   }
 
   /* Randomly generates the board */
@@ -200,3 +205,5 @@ function Conway(dimensions) {
     return board
   }
 }
+
+exports.game = conway

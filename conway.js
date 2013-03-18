@@ -1,36 +1,69 @@
 /*
 Conway's Game of Life.
 Default board size is 25x25 or you can passing an array to specify the dimensions of the board.
-
 e.g.
 c = new Conway([3,3])
 
-You can randomly generate the board:
+Start the game:
+c.startGame() `or use the shorter alias c.s()`
+
+Pausing the game:
+c.pauseGame() `or use the shorter alias c.p()`
+
+If you want more control, you can randomly generate the board:
 c.populateBoard()
 
-or you can set the board explicitly:
+Or you can set the board explicitly:
 c.setBoard([[ true, false, false ],
             [ true, true, false ],
             [ false, true, true ]])
 
-To progress the board to the next generation
+To manually progress the board to the next generation:
 c.nextGeneration()
 
 Easiest way to run this is just to copy and execute the contents of this script in browser console like Chrome or
 Firefox. You can also execute this in NodeJS.
-
-c = new Conway()
-c.setBoard([[false,true,false],[false,true,false],[false,true,false]])
 */
 function Conway(dimensions) {
   var board = []
   var dimensions = typeof dimensions !== 'undefined' ? dimensions : [25,25]
   var neighborRanges = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]
+  var boardIsSet = false
+  var playing = false
+
+  /* Kicks the game off */
+  this.startGame = function() {
+    if (playing) {
+      return
+    }
+    if (!boardIsSet) {
+      this.populateBoard()
+    }
+    playing = setInterval(this.nextGeneration, 500);
+  }
+
+  /* alias for startGame */
+  this.s = function() {
+    this.startGame()
+  }
+
+  /* Pauses the game */
+  this.pauseGame = function() {
+    if (playing) {
+      playing = clearInterval(playing)
+    }
+  }
+
+  /* alias for pauseGame */
+  this.p = function() {
+    this.pauseGame()
+  }
 
   /* Randomly generates the board */
   this.populateBoard = function() {
     board = populateBoard(dimensions[0], dimensions[1])
-    this.printBoard(board)
+    boardIsSet = true
+    printBoard()
   }
 
   /* Set the board explicitly so we can do repeat runs
@@ -59,7 +92,8 @@ function Conway(dimensions) {
     }
     board = newBoard
     dimensions = [rowCount, columnCount]
-    this.printBoard(newBoard)
+    boardIsSet = true
+    printBoard()
   }
 
   /* Progress the board to the next generation */
@@ -86,24 +120,32 @@ function Conway(dimensions) {
       }
     }
     board = newBoard
-    this.printBoard()
+    printBoard()
   }
 
-  /* Displays the current board in ascii */
   this.printBoard = function() {
+    printBoard()
+  }
+
+  /* private - Displays the current board in ascii */
+  printBoard = function() {
+    var aliveCount = 0, deadCount = 0
     for (var i = 0, bl = board.length; i < bl; i++) {
       var printString = ["|"]
       var row = board[i]
       for (var j = 0, rl = row.length; j < rl; j++) {
         if (row[j]) {
           printString.push("*|")
+          aliveCount++
         }
         else {
           printString.push(" |")
+          deadCount++
         }
       }
       console.log(printString.join(""))
     }
+    console.log(["total: ", dimensions[0]*dimensions[1], ", alive: ", aliveCount, ", dead: ", deadCount].join(""))
   }
 
   /* private - returns the number of live neighbors for the given x,y */

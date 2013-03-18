@@ -18,6 +18,9 @@ c.nextGeneration()
 
 Easiest way to run this is just to copy and execute the contents of this script in browser console like Chrome or
 Firefox. You can also execute this in NodeJS.
+
+c = new Conway()
+c.setBoard([[false,true,false],[false,true,false],[false,true,false]])
 */
 function Conway(dimensions) {
   var board = []
@@ -37,7 +40,25 @@ function Conway(dimensions) {
    *       [ false, true, true ]]
    */
   this.setBoard = function(newBoard) {
+    if (typeof newBoard === 'undefined') {
+      throw 'FAIL: You gotta give me something to set'
+    }
+    if (!(newBoard instanceof Array)) {
+      throw 'FAIL: I only accept arrays'
+    }
+    if (newBoard.length === 0) {
+      throw 'FAIL: You expect me to set it to nothing? I won\'t do it I tell ya.'
+    }
+    var rowCount = newBoard.length
+    var columnCount = null
+    for (var i = 0; i < rowCount; i++) {
+      columnCount = newBoard[i].length
+      if (rowCount !== columnCount) {
+        throw "FAIL: Board not set because I can only play on a square world right now. Sorry."
+      }
+    }
     board = newBoard
+    dimensions = [rowCount, columnCount]
     this.printBoard(newBoard)
   }
 

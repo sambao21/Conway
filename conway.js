@@ -15,6 +15,9 @@ c.setBoard([[ true, false, false ],
 
 To progress the board to the next generation
 c.nextGeneration()
+
+Easiest way to run this is just to copy and execute the contents of this script in browser console like Chrome or
+Firefox. You can also execute this in NodeJS.
 */
 function Conway(dimensions) {
   var board = []

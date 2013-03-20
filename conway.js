@@ -47,7 +47,7 @@ function conway(dimensions) {
     playing = setInterval(this.nextGeneration, 500);
   }
 
-  /* alias for startGame */
+  /* alias for start */
   this.s = function() {
     this.start()
   }
@@ -59,7 +59,7 @@ function conway(dimensions) {
     }
   }
 
-  /* alias for pauseGame */
+  /* alias for pause */
   this.p = function() {
     this.pause()
   }

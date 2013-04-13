@@ -133,7 +133,7 @@ function conway(dimensions) {
   }
 
   /* private - Displays the current board in ascii */
-  printBoard = function() {
+  var printBoard = function() {
     var aliveCount = 0, deadCount = 0
     for (var i = 0, bl = board.length; i < bl; i++) {
       var printString = ["|"]
